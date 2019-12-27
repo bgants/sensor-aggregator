@@ -4,8 +4,10 @@ import com.gants.sensoraggregator.model.Sensor;
 import com.gants.sensoraggregator.respository.SensorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import java.sql.Date;
+import java.util.List;
 
 @RestController
 @RequestMapping(path = "sensor", produces = "application/json")
@@ -19,10 +21,14 @@ public class SensorController {
         return sensorRepository.findAll();
     }
 
+    @GetMapping("/readings/sampleDates")
+    public List<Date> getBySensorDate() {
+        return sensorRepository.findDistinctReadingSampleDates();
+    }
+
     @PostMapping(path = "/reading")
     @ResponseStatus(HttpStatus.CREATED)
     public Sensor processSensorReading(@RequestBody Sensor sensor) {
         return sensorRepository.save(sensor);
     }
-
 }
